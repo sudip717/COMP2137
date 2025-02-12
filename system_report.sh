@@ -1,44 +1,42 @@
 #!/bin/bash
-# Clear the terminal screen
-clear
-# finds current user
+# Current user
 USERNAME=$(whoami)
-# finds the current date
+# Current date
 DATE=$(date +"%Y-%m-%d %H:%M:%S")
-# finds system host
+# System hostname
 HOSTNAME=$(hostname)
-# finds os name and version
+# Os name and version
 OS=$(. /etc/os-release && echo "$PRETTY_NAME")
-# fnds uptime of the system
+# System uptime
 Uptime=$(uptime -p)
-# finds cpu model
+# Cpu model
 CPU=$(lscpu | grep 'Model name' | awk -F': ' '{print $2}' | sed 's/^ *//')
-# finds total installed RAM
+# RAM installed
 RAM=$(free -h | awk '/^Mem:/ {print $2}')
-# finds disk information
+# Disk information
 DISKS=$(lsblk -d -o NAME,SIZE | grep -v "NAME" | awk '{print "Disk: " $1 " Size: " $2}')
-# finds the video card model.
+# Video card model.
 Video=$(lspci | grep -i vga | awk -F: '{print $3}' | sed 's/^ //')
 
-# finds the FQDN of the system.
+# System FQDN 
 FQDN=$(hostname -f)
-# finds the IP ADDRESS FOR THE INTERFACE THAT IS CONNECTED TO THE DEFAULT GATEWAY.
+# IP ADDRESS 
 Host_Address=$(ip a | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | head -n 1)
-# finds the Gateway address.
+# Gateway address.
 Gateway_IP=$(ip r | grep default | awk '{print $3}')
-# finds the DNS server IP.
+# IP of DNS server
 DNS_Server=$(grep nameserver /etc/resolv.conf | awk '{print $2}' | head -n 1)
-# finds who is logged in.
+# Logged in user
 Users_Logged_In=$(who | awk '{print $1}' | sort | uniq | tr '\n' ',' | sed 's/,$//')
-# finds free disk space for each partition.
+# Free disk space
 Disk_Space=$(df -h | awk '/^\/dev/ {print $6 " " $4}')
-# finds the total number of running processes.
+# Number of running processes.
 Process_Count=$(ps -e | wc -l)
-# find the load on the system.
+# System load
 Avg_load=$(uptime | awk -F'average: ' '{print $2}')
-# finds the ports that are listening.
+# Listening ports
 Listening_Ports=$(ss -tuln | awk '/LISTEN/ {print $5}' | cut -d':' -f2 | sort -n | uniq | tr '\n' ',' | sed 's/,$//')
-# finds if the firewall is active or inactive.
+# Firewall status
 UFW_Status=$(sudo ufw status | grep -w "Status" | awk '{print $2}')
 
 
